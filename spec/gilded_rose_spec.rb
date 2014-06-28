@@ -33,42 +33,38 @@ end
 describe "InventoryItem" do
   subject { InventoryItem.new "+5 Dexterity Vest", 10, 20 }
 
-  context "base item behavior" do
+  it "should decrease sell_in by 1" do
+    expect {
+      subject.update
+    }.to change{ subject.sell_in }.by(-1)
+  end
 
-    it "should decrease sell_in by 1" do
+  it "should decrease quality by 1" do
+    expect {
+      subject.update
+    }.to change{ subject.quality }.by(-1)
+  end
+
+  it "should always have a non-negative quality" do
+    expect {
+      (subject.sell_in * 10).times {subject.update}
+    }.to change{ subject.quality }.to(0)
+  end
+
+  context "when sell_in expires" do
+    before(:each) { 10.times{ subject.update } }
+
+    it "should have a sell_in < 1" do
+      expect(subject.sell_in).to be < 1
+    end
+
+    it "should decrease quality by 2 after when sell_in < 1" do
       expect {
         subject.update
-      }.to change{ subject.sell_in }.by(-1)
+      }.to change{ subject.quality }.by(-2)
     end
 
-    it "should decrease quality by 1" do
-      expect {
-        subject.update
-      }.to change{ subject.quality }.by(-1)
-    end
-
-    it "should always have a non-negative quality" do
-      expect {
-        (subject.sell_in * 10).times {subject.update}
-      }.to change{ subject.quality }.to(0)
-    end
-
-    context "when sell_in expires" do
-      before(:each) { 10.times{ subject.update } }
-
-      it "should have a sell_in < 1" do
-        expect(subject.sell_in).to be < 1
-      end
-
-      it "should decrease quality by 2 after when sell_in < 1" do
-        expect {
-          subject.update
-        }.to change{ subject.quality }.by(-2)
-      end
-
-    end
-
-  end # context base item
+  end
 
 end
 
