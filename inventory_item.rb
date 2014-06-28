@@ -2,8 +2,8 @@ require_relative 'item'
 
 class InventoryItem < Item
   def update
-    update_quality
     update_sell_in
+    update_quality
   end
 
   protected

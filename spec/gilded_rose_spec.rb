@@ -4,6 +4,7 @@ require_relative '../inventory_item'
 require_relative '../conjured_item'
 require_relative '../sulfuras_item'
 require_relative '../aged_brie_item'
+require_relative '../backstage_passes_item'
 
 
 describe 'GildedRose' do
@@ -116,9 +117,9 @@ describe 'GildedRose' do
           end
         end
         context "sell_in == 0" do
-          before(:each) { 15.times{ subject.update_quality } }
+          before(:each) { 14.times{ subject.update_quality } }
           it "should have a sell_in == 0" do
-              expect( backstage_passes.sell_in ).to eq(0)
+            expect{ subject.update_quality }.to change{backstage_passes.sell_in}.to(0)
           end
 
           it "should have a quality of 0" do
@@ -154,7 +155,6 @@ describe 'ConjuredItem' do
   end
 end
 
-
 describe 'SulfurasItem' do
   subject { SulfurasItem.new :ignored, 10, 10 }
 
@@ -183,6 +183,51 @@ describe 'AgedBrieItem' do
     end
   end
 
+end
+
+describe 'BackstagePassesItem' do
+  subject { BackstagePassesItem.new :ignored, 15, 20 }
+
+  context "sell_in > 10" do
+    it "should have a sell_in > 10" do
+        expect( subject.sell_in ).to be > 10
+    end
+
+    it "should increase quality by 1 on update" do
+      expect{ subject.update }.to change{subject.quality}.by(1)
+    end
+  end
+
+  context "sell_in <= 10" do
+    before(:each) { 5.times{ subject.update } }
+    it "should have a sell_in <= 10" do
+        expect( subject.sell_in ).to be <= 10
+    end
+
+    it "should increase quality by 2 on update" do
+      expect{ subject.update }.to change{subject.quality}.by(2)
+    end
+  end
+  context "sell_in <= 5" do
+    before(:each) { 10.times{ subject.update } }
+    it "should have a sell_in <= 5" do
+        expect( subject.sell_in ).to be <= 5
+    end
+
+    it "should increase quality by 3 on update" do
+      expect{ subject.update }.to change{subject.quality}.by(3)
+    end
+  end
+  context "sell_in == 0" do
+    before(:each) { 14.times{ subject.update } }
+    it "should have a sell_in == 0" do
+      expect{ subject.update }.to change{subject.sell_in}.to(0)
+    end
+
+    it "should have a quality of 0" do
+      expect{ subject.update }.to change{subject.quality}.to(0)
+    end
+  end
 end
 
 describe 'InventoryItem' do
@@ -217,6 +262,10 @@ describe 'ItemFactory' do
 
   it "creates aged brie items" do
     expect(subject.create "Aged Brie", 2, 0).to be_kind_of(AgedBrieItem)
+  end
+
+  it "created backstage passes items" do
+    expect(subject.create "Backstage passes to a TAFKAL80ETC concert", 0, 80).to be_kind_of(BackstagePassesItem)
   end
 
 end
