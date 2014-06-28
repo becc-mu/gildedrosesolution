@@ -18,6 +18,8 @@ class GildedRose
   def update_quality
 
     for i in 0..(@items.size-1)
+      @items[i].quality -= 1 if (@items[i].name.start_with?("Conjured") && @items[i].quality > 2 )
+
       if (@items[i].name != "Aged Brie" && @items[i].name != "Backstage passes to a TAFKAL80ETC concert")
         if (@items[i].quality > 0)
           if (@items[i].name != "Sulfuras, Hand of Ragnaros")

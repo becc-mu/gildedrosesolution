@@ -123,7 +123,6 @@ describe 'GildedRose' do
 
       context "Conjured" do
         it "should reduce quality by 2 on update_quality" do
-          pending "Conjured items decrease by 2 on update_quality feature"
           expect{ subject.update_quality }.to change{conjured.quality}.by(-2)
         end
 
