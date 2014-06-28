@@ -1,5 +1,6 @@
 require_relative '../gilded_rose'
 require_relative '../item_factory'
+require_relative '../inventory_item'
 
 describe 'GildedRose' do
 	subject { GildedRose.new }
@@ -138,6 +139,20 @@ describe 'Item' do
   it { should respond_to(:name) }
   it { should respond_to(:sell_in) }
   it { should respond_to(:quality) }
+
+end
+
+describe 'InventoryItem' do
+  subject { InventoryItem.new :ignored, 10, 10 }
+
+  it { should respond_to(:update_quality) }
+
+  it "should decrease quality by one when update_quality called" do
+    expect{ subject.update_quality }.to change{ subject.quality }.by(-1)
+  end
+  it "should decrease sell_in by one when update_quality called" do
+    expect{ subject.update_quality }.to change{ subject.sell_in }.by(-1)
+  end
 
 end
 
