@@ -1,4 +1,5 @@
 require_relative '../gilded_rose'
+require_relative '../item_factory'
 
 describe 'GildedRose' do
 	subject { GildedRose.new }
@@ -138,4 +139,13 @@ describe 'Item' do
   it { should respond_to(:sell_in) }
   it { should respond_to(:quality) }
 
+end
+
+describe 'ItemFactory' do
+  subject { ItemFactory.new }
+  it { should respond_to(:create) }
+
+  it "creates a basic item" do
+    expect(subject.create "name", 10, 15).to be_kind_of(Item)
+  end
 end
