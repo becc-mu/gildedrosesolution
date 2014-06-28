@@ -18,8 +18,6 @@ class GildedRose
   end
 
   def update_quality
-
-
     @items.each do |item|
       if item.instance_of? Item
         item.quality -= 1 if (item.name.start_with?("Conjured") && item.quality > 2 )
@@ -68,7 +66,7 @@ class GildedRose
           end
         end
       else
-        item.update_quality
+        item.update
       end
     end # items.each
   end

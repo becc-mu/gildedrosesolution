@@ -2,6 +2,7 @@ require_relative '../gilded_rose'
 require_relative '../item_factory'
 require_relative '../inventory_item'
 require_relative '../conjured_item'
+require_relative '../sulfuras_item'
 
 describe 'GildedRose' do
 	subject { GildedRose.new }
@@ -147,20 +148,29 @@ describe 'ConjuredItem' do
   subject { ConjuredItem.new :ignored, 10, 10 }
 
   it "should reduce quality by 2 on update_quality" do
-    expect{ subject.update_quality }.to change{subject.quality}.by(-2)
+    expect{ subject.update }.to change{subject.quality}.by(-2)
+  end
+end
+
+
+describe 'SulfurasItem' do
+  subject { SulfurasItem.new :ignored, 10, 10 }
+
+  it "should not touch quality on update_quality" do
+    expect{ subject.update }.to_not change{subject.quality}
   end
 end
 
 describe 'InventoryItem' do
   subject { InventoryItem.new :ignored, 10, 10 }
 
-  it { should respond_to(:update_quality) }
+  it { should respond_to(:update) }
 
   it "should decrease quality by one when update_quality called" do
-    expect{ subject.update_quality }.to change{ subject.quality }.by(-1)
+    expect{ subject.update }.to change{ subject.quality }.by(-1)
   end
   it "should decrease sell_in by one when update_quality called" do
-    expect{ subject.update_quality }.to change{ subject.sell_in }.by(-1)
+    expect{ subject.update }.to change{ subject.sell_in }.by(-1)
   end
 
 end
@@ -176,4 +186,9 @@ describe 'ItemFactory' do
   it "creates conjured items" do
     expect(subject.create "Conjured Mana Cake", 10, 15).to be_kind_of(ConjuredItem)
   end
+
+  it "creates sulfuras items" do
+    expect(subject.create "Sulfuras, Hand of Ragnaros", 0, 80).to be_kind_of(SulfurasItem)
+  end
+
 end
