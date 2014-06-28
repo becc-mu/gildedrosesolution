@@ -1,8 +1,7 @@
 require_relative 'inventory_item'
 
 class ConjuredItem < InventoryItem
-  def update
-    @quality -= 1
-    super
+  def update_quality
+    @quality -= 2
   end
 end
