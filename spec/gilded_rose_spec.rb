@@ -13,50 +13,10 @@ describe 'GildedRose' do
 	it { should respond_to(:update_quality) }
   it { should respond_to(:items) }
 
-  context "update_quality was called" do
-      let( :vanilla_item ) { subject.items[0] }
-      let( :aged_brie ) { subject.items[1] }
-      let( :sulfuras ) { subject.items[3] }
-      let( :backstage_passes ) { subject.items[4] }
-      let( :conjured ) { subject.items[5] }
-
-      context "base item behavior" do
-
-        it "should decrease sell_in by 1" do
-          expect {
-            subject.update_quality
-          }.to change{ vanilla_item.sell_in }.by(-1)
-        end
-
-        it "should decrease quality by 1" do
-          expect {
-            subject.update_quality
-          }.to change{ vanilla_item.quality }.by(-1)
-        end
-
-        it "should always have a non-negative quality" do
-          expect {
-            (vanilla_item.sell_in * 10).times {subject.update_quality}
-          }.to change{ vanilla_item.quality }.to(0)
-        end
-
-        context "when sell_in expires" do
-          before(:each) { 10.times{ subject.update_quality } }
-
-          it "should have a sell_in < 1" do
-            expect(vanilla_item.sell_in).to be < 1
-          end
-
-          it "should decrease quality by 2 after when sell_in < 1" do
-            expect {
-              subject.update_quality
-            }.to change{ vanilla_item.quality }.by(-2)
-          end
-
-        end
-
-      end # context base item
-
+  it "should not have any items that are an instance of Item" do
+    subject.items.each do |item|
+          expect(item).to_not be_an_instance_of(Item)
+    end
   end
 
 end
@@ -67,6 +27,48 @@ describe 'Item' do
   it { should respond_to(:name) }
   it { should respond_to(:sell_in) }
   it { should respond_to(:quality) }
+
+end
+
+describe "InventoryItem" do
+  subject { InventoryItem.new "+5 Dexterity Vest", 10, 20 }
+
+  context "base item behavior" do
+
+    it "should decrease sell_in by 1" do
+      expect {
+        subject.update
+      }.to change{ subject.sell_in }.by(-1)
+    end
+
+    it "should decrease quality by 1" do
+      expect {
+        subject.update
+      }.to change{ subject.quality }.by(-1)
+    end
+
+    it "should always have a non-negative quality" do
+      expect {
+        (subject.sell_in * 10).times {subject.update}
+      }.to change{ subject.quality }.to(0)
+    end
+
+    context "when sell_in expires" do
+      before(:each) { 10.times{ subject.update } }
+
+      it "should have a sell_in < 1" do
+        expect(subject.sell_in).to be < 1
+      end
+
+      it "should decrease quality by 2 after when sell_in < 1" do
+        expect {
+          subject.update
+        }.to change{ subject.quality }.by(-2)
+      end
+
+    end
+
+  end # context base item
 
 end
 

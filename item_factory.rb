@@ -15,7 +15,7 @@ class ItemFactory
     elsif name.include? "Backstage passes"
       BackstagePassesItem.new name, sell_in, quality
     else
-      Item.new name, sell_in, quality
+      InventoryItem.new name, sell_in, quality
     end
   end
 end
