@@ -1,4 +1,4 @@
-require_relative 'item'
+require_relative 'inventory_item'
 require_relative 'conjured_item'
 require_relative 'sulfuras_item'
 require_relative 'aged_brie_item'
