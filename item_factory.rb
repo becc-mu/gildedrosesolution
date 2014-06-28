@@ -7,6 +7,8 @@ class ItemFactory
       ConjuredItem.new name, sell_in, quality
     elsif name.start_with? 'Sulfuras'
       SulfurasItem.new name, sell_in, quality
+    elsif name.include? 'Aged Brie'
+      AgedBrieItem.new name, sell_in, quality
     else
       Item.new name, sell_in, quality
     end

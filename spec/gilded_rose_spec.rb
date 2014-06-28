@@ -3,6 +3,8 @@ require_relative '../item_factory'
 require_relative '../inventory_item'
 require_relative '../conjured_item'
 require_relative '../sulfuras_item'
+require_relative '../aged_brie_item'
+
 
 describe 'GildedRose' do
 	subject { GildedRose.new }
@@ -161,6 +163,28 @@ describe 'SulfurasItem' do
   end
 end
 
+describe 'AgedBrieItem' do
+  subject { AgedBrieItem.new :ignored, 10, 10}
+  let!( :initial_quality ) { subject.quality }
+
+  [1,10,100,1000].each do |age|
+    context "when age increases by #{age}" do
+      let!( :initial_quality ) { subject.quality }
+      before(:each) { age.times{ subject.update_quality } }
+
+      it "should increase in quality" do
+        expect( subject.quality).to be > initial_quality
+      end
+
+      it "should not increase in quality over 50" do
+        expect( subject.quality).to be <= 50
+      end
+
+    end
+  end
+
+end
+
 describe 'InventoryItem' do
   subject { InventoryItem.new :ignored, 10, 10 }
 
@@ -189,6 +213,10 @@ describe 'ItemFactory' do
 
   it "creates sulfuras items" do
     expect(subject.create "Sulfuras, Hand of Ragnaros", 0, 80).to be_kind_of(SulfurasItem)
+  end
+
+  it "creates aged brie items" do
+    expect(subject.create "Aged Brie", 2, 0).to be_kind_of(AgedBrieItem)
   end
 
 end
