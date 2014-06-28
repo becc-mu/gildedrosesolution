@@ -1,4 +1,4 @@
-require_relative 'gilded_rose'
+require_relative '../gilded_rose'
 
 describe 'GildedRose' do
 	subject { GildedRose.new }
