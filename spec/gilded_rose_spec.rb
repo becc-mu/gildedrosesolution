@@ -8,9 +8,9 @@ require_relative '../backstage_passes_item'
 
 
 describe 'GildedRose' do
-	subject { GildedRose.new }
+  subject { GildedRose.new }
 
-	it { should respond_to(:update_quality) }
+  it { should respond_to(:update_quality) }
   it { should respond_to(:items) }
 
   it "should not have any items that are an instance of Item" do
@@ -69,10 +69,15 @@ describe "InventoryItem" do
 end
 
 describe 'ConjuredItem' do
-  subject { ConjuredItem.new :ignored, 10, 10 }
+  subject { ConjuredItem.new :ignored, 10, 40 }
 
   it "should reduce quality by 2 on update_quality" do
     expect{ subject.update }.to change{subject.quality}.by(-2)
+  end
+
+  it "should reduce quality by 4 when sell_in < 1" do
+    10.times {subject.update}
+    expect{ subject.update }.to change{subject.quality}.by(-4)
   end
 end
 
