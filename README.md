@@ -1,5 +1,6 @@
 gildedrosesolution
 ==================
+[![Build Status](https://travis-ci.org/liquidweaver/gildedrosesolution.svg)](https://travis-ci.org/liquidweaver/gildedrosesolution)
 
 A solution to the ruby gilded rose kata
 
